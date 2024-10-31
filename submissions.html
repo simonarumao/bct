@@ -1,0 +1,946 @@
+<!-- submissions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submissions - Coding Internship Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-xl font-semibold">Coding Internship Platform</div>
+                <div class="flex items-center space-x-4">
+                    <a href="user-dashboard.html" class="text-blue-500 hover:text-blue-700">Back to Dashboard</a>
+                    <button id="connectWallet" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Connect Wallet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto mt-8 px-4">
+        <!-- Submit Work Form -->
+        <div id="submitWorkForm" class="bg-white p-6 rounded-lg shadow mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">Submit Work</h2>
+            <form id="workForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Work Details</label>
+                    <textarea id="workDetails" class="w-full p-2 border rounded" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                    Submit Work
+                </button>
+            </form>
+        </div>
+
+        <!-- Submissions List -->
+        <section>
+            <h2 class="text-2xl font-bold mb-4">All Submissions</h2>
+            <div id="submissionsList" class="space-y-4">
+                <!-- Submissions will be populated here -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const CONTRACT_ADDRESS = '0xf46ffD2fEfae61eb3ECf230d1cb5F3fF8618fFFc';
+        const CONTRACT_ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cost",
+				"type": "uint256"
+			}
+		],
+		"name": "addInternship",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			}
+		],
+		"name": "addQuestion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "workId",
+				"type": "uint256"
+			}
+		],
+		"name": "approveWork",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "questionId",
+				"type": "uint256"
+			}
+		],
+		"name": "claimReward",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_manager",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_teamLead",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_employee",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "cost",
+				"type": "uint256"
+			}
+		],
+		"name": "InternshipAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "student",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			}
+		],
+		"name": "InternshipPurchased",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			}
+		],
+		"name": "purchaseInternship",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "questionId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			}
+		],
+		"name": "QuestionAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "student",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "questionId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			}
+		],
+		"name": "RewardClaimed",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "details",
+				"type": "string"
+			}
+		],
+		"name": "submitWork",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "workId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "approver",
+				"type": "address"
+			}
+		],
+		"name": "WorkApproved",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "workId",
+				"type": "uint256"
+			}
+		],
+		"name": "WorkFinalized",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "workId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "student",
+				"type": "address"
+			}
+		],
+		"name": "WorkSubmitted",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "approvedWorks",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "employee",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllInternships",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "cost",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextWorkId",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct CodingInternshipPlatform.Internship[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllQuestions",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "reward",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct CodingInternshipPlatform.Question[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			}
+		],
+		"name": "getApprovedWorks",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "internshipId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "student",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "details",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "verified",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "approvals",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct CodingInternshipPlatform.Work[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			}
+		],
+		"name": "getSubmittedWorks",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "internshipId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "student",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "details",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "verified",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "approvals",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct CodingInternshipPlatform.Work[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "hasApproved",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "internships",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "cost",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "nextWorkId",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "workId",
+				"type": "uint256"
+			}
+		],
+		"name": "isWorkApproved",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "manager",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nextInternshipId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nextQuestionId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "purchasedInternships",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "questions",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "reward",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "solvedQuestions",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "studentTokens",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "teamLead",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "workLogs",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "internshipId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "student",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "details",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "verified",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint256",
+				"name": "approvals",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+] // Add your contract ABI here
+        
+        let contract;
+        let signer;
+        let internshipId;
+        let userAddress;
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    const provider = new ethers.providers.Web3Provider(window.ethereum);
+                    signer = provider.getSigner();
+                    contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                    
+                    userAddress = await signer.getAddress();
+                    const connectButton = document.getElementById('connectWallet');
+                    connectButton.textContent = `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
+                    
+                    await initializePage();
+                } catch (error) {
+                    console.error('Error connecting to wallet:', error);
+                    alert('Failed to connect wallet');
+                }
+            } else {
+                alert('Please install MetaMask');
+            }
+        }
+
+        async function initializePage() {
+            // Get internship ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            internshipId = urlParams.get('id');
+            
+            if (!internshipId) {
+                alert('No internship ID specified');
+                window.location.href = 'user-dashboard.html';
+                return;
+            }
+
+            // Check if user has purchased the internship
+            const hasPurchased = await contract.purchasedInternships(userAddress, internshipId);
+            const submitWorkForm = document.getElementById('submitWorkForm');
+            submitWorkForm.style.display = hasPurchased ? 'block' : 'none';
+
+            await loadSubmissions();
+        }
+
+        async function loadSubmissions() {
+            try {
+                const works = await contract.getSubmittedWorks(internshipId);
+                const submissionsList = document.getElementById('submissionsList');
+                submissionsList.innerHTML = '';
+
+                works.forEach((work, workId) => {
+                    if (work.student === '0x0000000000000000000000000000000000000000') return;
+
+                    const submissionCard = document.createElement('div');
+                    submissionCard.className = 'bg-white p-6 rounded-lg shadow';
+
+                    const isOwnSubmission = work.student.toLowerCase() === userAddress.toLowerCase();
+                    const statusClass = work.verified ? 'text-green-500' : 'text-yellow-500';
+                    const statusText = work.verified ? 'Approved' : 'Pending Approval';
+
+                    submissionCard.innerHTML = `
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Submitted by: ${work.student.substring(0, 6)}...${work.student.substring(38)}</p>
+                                <p class="text-sm ${statusClass} font-semibold">${statusText}</p>
+                                <p class="text-sm text-gray-500">Approvals: ${work.approvals}/3</p>
+                            </div>
+                            ${!isOwnSubmission && !work.verified ? `
+                                <button onclick="approveWork(${workId})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    Approve
+                                </button>
+                            ` : ''}
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded">
+                            <p class="whitespace-pre-wrap">${work.details}</p>
+                        </div>
+                    `;
+
+                    submissionsList.appendChild(submissionCard);
+                });
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                alert('Failed to load submissions');
+            }
+        }
+
+        async function submitWork(event) {
+            event.preventDefault();
+            const details = document.getElementById('workDetails').value;
+            
+            try {
+                const tx = await contract.submitWork(internshipId, details);
+                await tx.wait();
+                alert('Work submitted successfully!');
+                event.target.reset();
+                await loadSubmissions();
+            } catch (error) {
+                console.error('Error submitting work:', error);
+                alert('Failed to submit work');
+            }
+        }
+
+        async function approveWork(workId) {
+            try {
+                const tx = await contract.approveWork(internshipId, workId);
+                await tx.wait();
+                alert('Work approved successfully!');
+                await loadSubmissions();
+            } catch (error) {
+                console.error('Error approving work:', error);
+                alert('Failed to approve work');
+            }
+        }
+
+        document.getElementById('connectWallet').addEventListener('click', connectWallet);
+        document.getElementById('workForm').addEventListener('submit', submitWork);
+        
+        // Connect wallet on page load
+        window.addEventListener('load', connectWallet);
+    </script>
+</body>
+</html>
