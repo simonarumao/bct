@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Coding Internship Platform</title>
+    <title>User Dashboard - Coding Internship Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
+	<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
 <body class="bg-gray-100" style="background-color: #0F1934">
-    <nav class="top-0 w-full fixed z-50 ">
+	<nav class="top-0 w-full fixed z-50 ">
         <div class="relative z-50 ">
           <div class="max-w-full mx-[20px] md:mx-[20px] lg:mx-[50px]  sm:px-2 lg:px-4 xl:px-8  sm:shadow-xl rounded-2xl mt-2  " style="background-color: #1E293B;">
             <div class="flex items-center justify-between h-16 pl-2   ">
               <div class="brand">
-                <a href="user-dashboard.html" onClick={scrollToTop}>
+                <a href="/" onClick={scrollToTop}>
                   <img
                     class="w-12 h-8 rounded-lg"
                     src="https://i.ibb.co/ys1ZLpf/tailwindlogo-removebg-preview.png"
@@ -72,7 +75,10 @@
               </div>
               <div class="each-item flex justify-center items-center  space-x-4 lg:space-x-2  xl:space-x-6 pr-2">
                 <div class="flex justify-center items-center">
-					<span id="tokenBalance" class="text-white mr-6"></span>
+					<div class="text-white mr-6 border py-2 px-3 rounded-lg border-[#0EA5E9] ">
+					<i class="fa-brands fa-bitcoin"></i>
+					<span id="tokenBalance"></span>
+					</div>
                     <button id="connectWallet" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg shadow mr-4 hover:bg-blue-600" style="background-color:#0EA5E9 ;">
                         Connect Wallet
                     </button>
@@ -83,52 +89,49 @@
         </div>
       </nav>
 
-	
-    <div class="max-w-6xl mx-auto my-auto mt-32 px-4 ">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Add Question Form -->
-            <div class="bg-white p-6 rounded-lg shadow " style="background-color: #1E293B;">
-                <h2 class="text-2xl font-bold mb-4 text-white">Add Question</h2>
-                <form id="questionForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1"> Question Name</label>
-                        <input type="text" id="questionName" class="w-full p-2  rounded " style="background-color: #334155;" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1">Reward <span style = "color: #0EA5E9;">(Tokens)</span></label>
-                        <input type="number" id="questionReward" class="w-full p-2  rounded" style="background-color: #334155;" required>
-                    </div>
-                    <button type="submit" class="w-full  text-white py-2 rounded-lg " style = "background-color: #0EA5E9;">
-                        Add Question
-                    </button>
-                </form>
-            </div>
 
-            <!-- Add Internship Form -->
-            <div class="bg-white p-6 rounded-lg shadow" style="background-color: #1E293B;">
-                <h2 class="text-2xl font-bold mb-4 text-white">Add Internship</h2>
-                <form id="internshipForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1" >Internship Name</label>
-                        <input type="text" id="internshipName" class="w-full p-2  rounded" style="background-color: #334155;" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1">Cost <span style = "color: #0EA5E9;">(Tokens)</span></label>
-                        <input type="number" id="internshipCost" class="w-full p-2  rounded" style="background-color: #334155;" required>
-                    </div>
-                    <button type="submit" class="w-full  text-white py-2 rounded-lg " style = "background-color: #0EA5E9;">
-                        Add Internship
-                    </button>
-                </form>
-            </div>
-        </div>
+	  <div class="pt-12 pb-16">
+		<h1 class="text-3xl px-6 text-left sm:text-5xl font-bold text-white sm:text-center mb-5 pt-16">
+		  Coding Challenge DApp
+		</h1>
+		<p class="text-sm text-left px-6 sm:text-center text-white sm:text-lg mb-10" style="color:#94A3B8">Empowering Coders, Unlocking Opportunities &hyphen; Earn Tokens, Solve Challenges, Secure Your Future.</p>
+	  
+	  <div class="flex justify-left px-6 sm:justify-center space-x-8 ">
+		  <button
+					  class="bg-yellow-500 text-white font-semibold py-2 px-8 rounded-lg shadow hover:bg-yellow-600 transition duration-200"
+					  style = "background-color: #0EA5E9;">
+					  Get Started
+		  </button>
+		  <button
+					  id="connectWallet"
+					  class="bg-yellow-500 text-white font-semibold py-2 px-8 rounded-lg shadow hover:bg-yellow-600 transition duration-200"
+					  style = "background-color: #1E293B; color:#C2CCD9;"
+					>
+					  Learn More
+		  </button>
+	  </div>
+  </div>
+
+    <div style = "background-color:#0F172A;" class="px-[50px] pb-10 pt-20 ">
+        <!-- Questions Section -->
+		<h2 class="text-4xl font-semibold mb-4 text-white" >Problem Statements</h2>
+		<p style="color:#8F9FB3;" class="text-lg font-semibold mb-8">Tackle <span style="color: #34AEE6;">Challenges</span>, Master <span style="color: #34AEE6;">Skills</span>, and Level Up with Every Solution!</p>
+        <div
+        id="questionsList"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+      ></div>
+
+        <!-- Internships Section -->
+		<h2  class="text-4xl font-semibold mb-4 text-white mt-20" >Internships</h2>
+		<p style="color:#8F9FB3;" class="text-lg font-semibold mb-8">Unlock <span style="color: #F472B6;"> Opportunities,</span> Build <span style="color: #F472B6;">Careers,</span> and Shape Your <span style="color: #F472B6;">Future!</span></p>
+		<div
+        id="internshipsList"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6"
+      ></div>
     </div>
 
+
     <script>
-		if (window.location.pathname === "/bct/") {
-            // Redirect to your desired page
-            window.location.href = "/user-dashboard.html";
-        }
         const CONTRACT_ADDRESS = '0xf46ffD2fEfae61eb3ECf230d1cb5F3fF8618fFFc';
         const CONTRACT_ABI = [
 	{
@@ -904,7 +907,7 @@
         let contract;
         let signer;
 
-        // Add this script section at the beginning of each page's script tag, right after the CONTRACT_ADDRESS declaration
+       // Add this script section at the beginning of each page's script tag, right after the CONTRACT_ADDRESS declaration
 
 // Utility functions for wallet connection persistence
 const WALLET_CONNECTED_KEY = 'walletConnected';
@@ -934,14 +937,14 @@ async function connectWallet() {
             localStorage.setItem(WALLET_CONNECTED_KEY, 'true');
 
             // Page specific initializations
-            if (window.location.pathname.includes('index.html')) {
+            if (window.location.pathname.includes('admin.html')) {
                 // Admin page specific code
                 const admin = await contract.admin();
                 if (admin.toLowerCase() !== address.toLowerCase()) {
                     alert('Only admin can access this page');
-                    window.location.href = 'user-dashboard.html';
+                    window.location.href = 'index.html';
                 }
-            } else if (window.location.pathname.includes('user-dashboard.html')) {
+            } else if (window.location.pathname.includes('index.html')) {
                 // User dashboard specific code
                 await updateTokenBalance();
                 await loadQuestions();
@@ -981,41 +984,95 @@ window.ethereum.on('chainChanged', function(networkId){
 // Initialize on page load
 window.addEventListener('load', checkWalletConnection);
 
-        async function addQuestion(event) {
-            event.preventDefault();
-            const name = document.getElementById('questionName').value;
-            const reward = document.getElementById('questionReward').value;
-            
+        async function updateTokenBalance() {
+            const address = await signer.getAddress();
+            const balance = await contract.studentTokens(address);
+            document.getElementById('tokenBalance').innerHTML = `<span class="font-semibold" style = "color: #0EA5E9;">${balance.toString()} Tokens</span>  `;
+        }
+
+        async function loadQuestions() {
             try {
-                const tx = await contract.addQuestion(name, reward);
-                await tx.wait();
-                alert('Question added successfully!');
-                event.target.reset();
+                const questions = await contract.getAllQuestions();
+                const questionsList = document.getElementById('questionsList');
+                questionsList.innerHTML = '';
+
+                questions.forEach((question, index) => {
+                    if (!question.exists) return;
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-white shadow-md rounded-xl p-6 flex flex-col';
+					card.style = "background-color:#162034;"
+                    card.innerHTML = `
+                        <h3 class="font-semibold text-white text-2xl mb-1">${question.name}</h3>
+                        <p class="font-semibold mb-3"  style="color:#899AB1;">Reward: <span  style = "color: #0EA5E9;">${question.reward}</span> tokens</p>
+                        <button onclick="claimReward(${index})" class="bg-blue-500 w-36 text-white py-1 px-4 rounded-md font-semibold mt-2" style="background-color : #0E9DDD">
+                            Solve
+                        </button>
+                    `;
+                    questionsList.appendChild(card);
+                });
             } catch (error) {
-                console.error('Error adding question:', error);
-                alert('Failed to add question');
+                console.error('Error loading questions:', error);
             }
         }
 
-        async function addInternship(event) {
-            event.preventDefault();
-            const name = document.getElementById('internshipName').value;
-            const cost = document.getElementById('internshipCost').value;
-            
+        async function loadInternships() {
             try {
-                const tx = await contract.addInternship(name, cost);
-                await tx.wait();
-                alert('Internship added successfully!');
-                event.target.reset();
+                const internships = await contract.getAllInternships();
+                const internshipsList = document.getElementById('internshipsList');
+                internshipsList.innerHTML = '';
+
+                internships.forEach((internship, index) => {
+                    if (!internship.exists) return;
+
+                    const card = document.createElement('div');
+                    card.className = 'bg-white shadow-md rounded-xl p-6 flex flex-col';
+					card.style = "background-color:#162034;"
+                    card.innerHTML = `
+                        <h3 class="font-semibold text-white text-2xl mb-1 ">${internship.name}</h3>
+                        <p class="font-semibold mb-3"  style="color:#899AB1;">Cost: <span style="color:#F472A9;">${internship.cost}</span> tokens</p>
+                        <div class="flex space-x-2">
+                            <button onclick="purchaseInternship(${index})" class="bg-blue-500 w-36 text-white py-1 px-4 rounded-md font-semibold mt-2" style="background-color : #BE185D">
+                                Buy
+                            </button>
+                            <button onclick="window.location.href='submissions.html?id=${index}'" class="bg-blue-500 w-36 text-white py-1 px-4 rounded-md font-semibold mt-2" style="background-color : #BE185D">
+                                Submissions
+                            </button>
+                        </div>
+
+                    `;
+                    internshipsList.appendChild(card);
+                });
             } catch (error) {
-                console.error('Error adding internship:', error);
-                alert('Failed to add internship');
+                console.error('Error loading internships:', error);
+            }
+        }
+
+        async function claimReward(questionId) {
+            try {
+                const tx = await contract.claimReward(questionId);
+                await tx.wait();
+                alert('Reward claimed successfully!');
+                await updateTokenBalance();
+            } catch (error) {
+                console.error('Error claiming reward:', error);
+                alert('Failed to claim reward');
+            }
+        }
+
+        async function purchaseInternship(internshipId) {
+            try {
+                const tx = await contract.purchaseInternship(internshipId);
+                await tx.wait();
+                alert('Internship purchased successfully!');
+                await updateTokenBalance();
+            } catch (error) {
+                console.error('Error purchasing internship:', error);
+                alert('Failed to purchase internship');
             }
         }
 
         document.getElementById('connectWallet').addEventListener('click', connectWallet);
-        document.getElementById('questionForm').addEventListener('submit', addQuestion);
-        document.getElementById('internshipForm').addEventListener('submit', addInternship);
     </script>
 </body>
 </html>
