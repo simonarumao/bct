@@ -7,60 +7,122 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="text-xl font-semibold">Coding Internship Platform</div>
-                <div class="flex items-center space-x-4">
-                    <button id="connectWallet" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+<body class="bg-gray-100" style="background-color: #0F1934">
+    <nav class="top-0 w-full fixed z-50 ">
+        <div class="relative z-50 ">
+          <div class="max-w-full mx-[20px] md:mx-[20px] lg:mx-[50px]  sm:px-2 lg:px-4 xl:px-8  sm:shadow-xl rounded-2xl mt-2  " style="background-color: #1E293B;">
+            <div class="flex items-center justify-between h-16 pl-2   ">
+              <div class="brand">
+                <a href="user-dashboard.html" onClick={scrollToTop}>
+                  <img
+                    class="w-12 h-8 rounded-lg"
+                    src="https://i.ibb.co/ys1ZLpf/tailwindlogo-removebg-preview.png"
+                    alt=""
+                  />
+                </a>
+              </div>
+              <div class="nav-items flex items-center ">
+                <div class="hidden lg:flex lg:justify-center ">
+                  <div class=" flex  space-x-5 xl:space-x-[57px]">
+                    <div class="each-item pt-3">
+                      <a
+                        href="/analyzer"
+                        onClick={scrollToTop}
+                        class=" no-underline hover:no-underline cursor-pointer text-md text-white font-normal" style="color: #CBD5E1;"
+                      >
+                        About Us
+                      </a>
+                    </div>
+                    <div class="each-item">
+                      <a
+                        href="#internshipsList"
+                        class="flex relative py-3 no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                       
+                      >
+                        <div class="mr-1">Explore Internship</div>
+                        <div class="pt-[6px]">
+                         
+                        </div>
+                        
+                      </a>
+                    </div>
+                    <div class="each-item ">
+                      <a
+                        href="#questionsList"
+                        class="flex relative py-3 no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                       
+                      >
+                        <div class="mr-1">Explore Problems</div>
+                        <div class="pt-[6px]">
+                          
+                        </div>
+                        
+                      </a>
+                    </div>
+                    <div class="each-item pt-3">
+                      <a
+                        href="/hazard"
+                        class="no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                      >
+                        Learn Blockchain
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="each-item flex justify-center items-center  space-x-4 lg:space-x-2  xl:space-x-6 pr-2">
+                <div class="flex justify-center items-center">
+					<span id="tokenBalance" class="text-white mr-6"></span>
+                    <button id="connectWallet" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg shadow mr-4 hover:bg-blue-600" style="background-color:#0EA5E9 ;">
                         Connect Wallet
                     </button>
-                    <a href="user-dashboard.html" class="text-blue-500 hover:text-blue-700">User Dashboard</a>
-                </div>
+                </div>  
+              </div>
             </div>
+          </div>
         </div>
-    </nav>
+      </nav>
 
-    <main class="max-w-6xl mx-auto mt-8 px-4">
+	
+    <div class="max-w-6xl mx-auto my-auto mt-32 px-4 ">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Add Question Form -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-2xl font-bold mb-4">Add Question</h2>
+            <div class="bg-white p-6 rounded-lg shadow " style="background-color: #1E293B;">
+                <h2 class="text-2xl font-bold mb-4 text-white">Add Question</h2>
                 <form id="questionForm" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Question Name</label>
-                        <input type="text" id="questionName" class="w-full p-2 border rounded" required>
+                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1"> Question Name</label>
+                        <input type="text" id="questionName" class="w-full p-2  rounded " style="background-color: #334155;" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Reward (Tokens)</label>
-                        <input type="number" id="questionReward" class="w-full p-2 border rounded" required>
+                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1">Reward <span style = "color: #0EA5E9;">(Tokens)</span></label>
+                        <input type="number" id="questionReward" class="w-full p-2  rounded" style="background-color: #334155;" required>
                     </div>
-                    <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                    <button type="submit" class="w-full  text-white py-2 rounded-lg " style = "background-color: #0EA5E9;">
                         Add Question
                     </button>
                 </form>
             </div>
 
             <!-- Add Internship Form -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-2xl font-bold mb-4">Add Internship</h2>
+            <div class="bg-white p-6 rounded-lg shadow" style="background-color: #1E293B;">
+                <h2 class="text-2xl font-bold mb-4 text-white">Add Internship</h2>
                 <form id="internshipForm" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Internship Name</label>
-                        <input type="text" id="internshipName" class="w-full p-2 border rounded" required>
+                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1" >Internship Name</label>
+                        <input type="text" id="internshipName" class="w-full p-2  rounded" style="background-color: #334155;" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Cost (Tokens)</label>
-                        <input type="number" id="internshipCost" class="w-full p-2 border rounded" required>
+                        <label class="block text-sm font-medium mb-1 " style="color: #CBD5E1">Cost <span style = "color: #0EA5E9;">(Tokens)</span></label>
+                        <input type="number" id="internshipCost" class="w-full p-2  rounded" style="background-color: #334155;" required>
                     </div>
-                    <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                    <button type="submit" class="w-full  text-white py-2 rounded-lg " style = "background-color: #0EA5E9;">
                         Add Internship
                     </button>
                 </form>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         const CONTRACT_ADDRESS = '0xf46ffD2fEfae61eb3ECf230d1cb5F3fF8618fFFc';

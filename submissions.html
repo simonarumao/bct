@@ -8,31 +8,92 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <div class="text-xl font-semibold">Coding Internship Platform</div>
-                <div class="flex items-center space-x-4">
-                    <a href="user-dashboard.html" class="text-blue-500 hover:text-blue-700">Back to Dashboard</a>
-                    <button id="connectWallet" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+<body class="bg-gray-100" style="background-color: #0F1934">
+    <nav class="top-0 w-full fixed z-50 ">
+        <div class="relative z-50 ">
+          <div class="max-w-full mx-[20px] md:mx-[20px] lg:mx-[50px]  sm:px-2 lg:px-4 xl:px-8  sm:shadow-xl rounded-2xl mt-2  " style="background-color: #1E293B;">
+            <div class="flex items-center justify-between h-16 pl-2   ">
+              <div class="brand">
+                <a href="user-dashboard.html" onClick={scrollToTop}>
+                  <img
+                    class="w-12 h-8 rounded-lg"
+                    src="https://i.ibb.co/ys1ZLpf/tailwindlogo-removebg-preview.png"
+                    alt=""
+                  />
+                </a>
+              </div>
+              <div class="nav-items flex items-center ">
+                <div class="hidden lg:flex lg:justify-center ">
+                  <div class=" flex  space-x-5 xl:space-x-[57px]">
+                    <div class="each-item pt-3">
+                      <a
+                        href="/analyzer"
+                        onClick={scrollToTop}
+                        class=" no-underline hover:no-underline cursor-pointer text-md text-white font-normal" style="color: #CBD5E1;"
+                      >
+                        About Us
+                      </a>
+                    </div>
+                    <div class="each-item">
+                      <a
+                        href="#internshipsList"
+                        class="flex relative py-3 no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                       
+                      >
+                        <div class="mr-1">Explore Internship</div>
+                        <div class="pt-[6px]">
+                         
+                        </div>
+                        
+                      </a>
+                    </div>
+                    <div class="each-item ">
+                      <a
+                        href="#questionsList"
+                        class="flex relative py-3 no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                       
+                      >
+                        <div class="mr-1">Explore Problems</div>
+                        <div class="pt-[6px]">
+                          
+                        </div>
+                        
+                      </a>
+                    </div>
+                    <div class="each-item pt-3">
+                      <a
+                        href="/hazard"
+                        class="no-underline hover:no-underline cursor-pointer text-white text-md font-normal" style="color: #CBD5E1;"
+                      >
+                        Learn Blockchain
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="each-item flex justify-center items-center  space-x-4 lg:space-x-2  xl:space-x-6 pr-2">
+                <div class="flex justify-center items-center">
+					<span id="tokenBalance" class="text-white mr-6"></span>
+                    <button id="connectWallet" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg shadow mr-4 hover:bg-blue-600" style="background-color:#0EA5E9 ;">
                         Connect Wallet
                     </button>
-                </div>
+                </div>  
+              </div>
             </div>
+          </div>
         </div>
-    </nav>
+      </nav>
 
-    <main class="max-w-6xl mx-auto mt-8 px-4">
+    <div class="max-w-6xl mx-auto mt-24 px-4">
         <!-- Submit Work Form -->
-        <div id="submitWorkForm" class="bg-white p-6 rounded-lg shadow mb-8 hidden">
-            <h2 class="text-2xl font-bold mb-4">Submit Work</h2>
+        <div id="submitWorkForm" class=" p-6 rounded-lg shadow mb-8 hidden" style="background-color: #1E293B;">
+            <h2 class="text-2xl font-bold mb-3 text-white  ">Submit Work</h2>
             <form id="workForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium mb-1">Work Details</label>
-                    <textarea id="workDetails" class="w-full p-2 border rounded" rows="4" required></textarea>
+                    <label class="block text-sm font-medium mb-2 " style = "color: #0EA5E9;">Work Details</label>
+                    <textarea id="workDetails" class="w-full p-2 rounded" style="background-color: #334155;" rows="4" required></textarea>
                 </div>
-                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600" style = "background-color: #0EA5E9;">
                     Submit Work
                 </button>
             </form>
@@ -40,12 +101,31 @@
 
         <!-- Submissions List -->
         <section>
-            <h2 class="text-2xl font-bold mb-4">All Submissions</h2>
+            <h2 class="text-4xl font-semibold mb-4 mt-16 text-white">All Submissions</h2>
+			<p style="color:#8F9FB3;" class="text-lg font-semibold mb-8">Tackle <span style="color: #34AEE6;">Challenges</span>, Master <span style="color: #34AEE6;">Skills</span>, and Level Up with Every Solution!</p>
+
             <div id="submissionsList" class="space-y-4">
                 <!-- Submissions will be populated here -->
             </div>
         </section>
-    </main>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <script>
         const CONTRACT_ADDRESS = '0xf46ffD2fEfae61eb3ECf230d1cb5F3fF8618fFFc';
@@ -877,26 +957,27 @@
 
                     const submissionCard = document.createElement('div');
                     submissionCard.className = 'bg-white p-6 rounded-lg shadow';
-
+                    submissionCard.style = 'background-color:#1E293B;'
                     const isOwnSubmission = work.student.toLowerCase() === userAddress.toLowerCase();
-                    const statusClass = work.verified ? 'text-green-500' : 'text-yellow-500';
+					const statusClass = work.verified ? 'text-[#34AEE6]' : 'text-yellow-500';
                     const statusText = work.verified ? 'Approved' : 'Pending Approval';
 
                     submissionCard.innerHTML = `
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <p class="text-sm text-gray-500">Submitted by: ${work.student.substring(0, 6)}...${work.student.substring(38)}</p>
-                                <p class="text-sm ${statusClass} font-semibold">${statusText}</p>
                                 <p class="text-sm text-gray-500">Approvals: ${work.approvals}/3</p>
+								<p class="text-sm ${statusClass} font-semibold">${statusText}</p>
+
                             </div>
                             ${!isOwnSubmission && !work.verified ? `
-                                <button onclick="approveWork(${workId})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                <button onclick="approveWork(${workId})" class=" text-white px-4 py-2 rounded-lg hover:bg-blue-600" style="background-color: #34AEE6;">
                                     Approve
                                 </button>
                             ` : ''}
                         </div>
-                        <div class="bg-gray-50 p-4 rounded">
-                            <p class="whitespace-pre-wrap">${work.details}</p>
+                        <div class="bg-gray-50 p-4 rounded-lg" style="background-color:#334155">
+                            <p class="whitespace-pre-wrap text-white" >${work.details}</p>
                         </div>
                     `;
 
