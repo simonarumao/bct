@@ -125,6 +125,10 @@
     </div>
 
     <script>
+		if (window.location.pathname === "/") {
+            // Redirect to your desired page
+            window.location.href = "/user-dashboard.html";
+        }
         const CONTRACT_ADDRESS = '0xf46ffD2fEfae61eb3ECf230d1cb5F3fF8618fFFc';
         const CONTRACT_ABI = [
 	{
